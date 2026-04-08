@@ -32,6 +32,8 @@
       --max-w:      680px;
     }
 
+    *, *::before, *::after { box-sizing: border-box; }
+
     html { scroll-behavior: smooth; font-size: 16px; }
 
     body {
@@ -41,6 +43,9 @@
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
     }
+
+    /* Prevent browsers from applying their own fonts to these elements */
+    button, input, textarea, select { font-family: inherit; }
 
     a { color: var(--gold); text-decoration: none; }
     a:hover { color: var(--gold-light); }
@@ -389,10 +394,12 @@
       margin-top: 1px;
     }
     .install-steps code {
+      font-family: var(--sans);
       background: rgba(255,255,255,0.06);
       padding: 1px 6px;
       border-radius: 4px;
       font-size: 0.82rem;
+      font-weight: 600;
       color: var(--text);
     }
     .install-note {
