@@ -16,6 +16,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
+
       --gold:       #c9a84c;
       --gold-light: #e2c87a;
       --gold-dim:   #8a6e2f;
@@ -31,8 +32,6 @@
       --sans:       'Lato', system-ui, sans-serif;
       --max-w:      680px;
     }
-
-    *, *::before, *::after { box-sizing: border-box; }
 
     html { scroll-behavior: smooth; font-size: 16px; }
 
@@ -221,11 +220,11 @@
     }
     .hero-note {
       margin-top: 18px;
-      font-size: 0.82rem;
-      color: var(--text-dim);
+      font-size: 0.88rem;
+      color: #b0a090;
       animation: fadeUp 0.7s ease 0.4s both;
     }
-    .hero-note strong { color: var(--text-muted); }
+    .hero-note strong { color: #c9a84c; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
@@ -523,8 +522,9 @@
         </a>
       </div>
       <p class="hero-note">
-        <strong>Free.</strong> No account needed. Works on any phone.
-        For parents, coaches, players. Anyone with a scoresheet.
+        <strong>Free.</strong> No account. No sign-up. Nothing to share but the game.
+        Built for my own family — and yours. Parents, coaches, players.
+        Anyone with a scoresheet.
       </p>
     </div>
   </section>
@@ -544,7 +544,7 @@
 
       <div class="story-body">
         <p class="fade">
-          Built for my own family — free for yours. No account. No sign-up.
+          Built for my own family — free for yours.
           Just a scoresheet and a camera.
         </p>
       </div>
@@ -598,15 +598,6 @@
     </div>
   </section>
 
-  <!-- ── Who it's for ─────────────────────────────────────────────────── -->
-  <section id="who">
-    <div class="container">
-      <p class="fade" style="font-family: var(--serif); font-size: clamp(1.1rem, 2.5vw, 1.4rem); color: var(--text); line-height: 1.6; max-width: 560px;">
-        A parent, a coach, a player. Anyone with a scoresheet and a reason to learn from it. This is for you.
-      </p>
-    </div>
-  </section>
-
   <!-- ── Install ────────────────────────────────────────────────────── -->
   <section id="install">
     <div class="container">
@@ -653,43 +644,23 @@
     </div>
   </section>
 
-  <!-- ── Support ────────────────────────────────────────────────────── -->
-  <section id="support">
+  <!-- ── Support + Feedback ───────────────────────────────────────── -->
+  <section id="support" style="background: var(--bg-section); border-top: 1px solid var(--border);">
     <div class="container">
       <div class="support-inner">
-        <p class="label">Support the project</p>
-        <h2 class="fade">If it helped,<br />pass it on.</h2>
+        <p class="label">If it helped, pass it on</p>
+        <h2 class="fade">Every suggestion is<br />read personally.</h2>
 
         <p class="fade">
           I built SecondMove for my son and for every kid like him who plays,
           learns, and deserves to see what happened on that board.
         </p>
         <p class="fade">
-          It&#8217;s free. I&#8217;ll do my best to keep it that way.
-        </p>
-        <p class="fade">
-          Every scan has a cost, so I run a daily limit. If you hit it, it just
-          means that day&#8217;s budget is used up. Come back tomorrow.
-          If it helped you today, tell another chess parent, coach, or club.
-          That&#8217;s worth more than anything else.
+          Every scan has a cost, so I run a daily limit. If you hit it, come back tomorrow.
+          If it helped you today, tell another chess parent, coach, or club —
+          that&#8217;s worth more than anything else.
         </p>
 
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0Q2bjAhZQLFKbfMDPYniWK2HRtpFhKFqdaRe7NVgZwIO3RA/viewform" target="_blank" rel="noopener" class="btn btn-gold fade">
-          Share your thoughts &#x2192;
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Tell us what you need ─────────────────────────────────────── -->
-  <section id="feedback" style="background: var(--bg-section); border-top: 1px solid var(--border);">
-    <div class="container">
-      <div style="max-width: 480px;">
-        <p class="label">Shape what comes next</p>
-        <h2 class="flow-title fade" style="margin-bottom: 12px;">Tell us what you need.</h2>
-        <p class="fade" style="font-size: 1rem; color: var(--text-muted); margin-bottom: 28px;">
-          Two questions. Every suggestion is read personally.
-        </p>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSf0Q2bjAhZQLFKbfMDPYniWK2HRtpFhKFqdaRe7NVgZwIO3RA/viewform" target="_blank" rel="noopener" class="btn btn-gold fade">
           Share your thoughts &#x2192;
         </a>
@@ -707,7 +678,7 @@
         <a href="#story">Our Story</a>
         <a href="#flow">How it works</a>
         <a href="#install">Install</a>
-        <a href="#feedback">Feedback</a>
+        <a href="#support">Feedback</a>
       </div>
       <div class="footer-base">
         Free &middot; No account required &middot; Your photos stay private
