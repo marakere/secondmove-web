@@ -285,7 +285,7 @@
       position: absolute;
       left: 27px;
       top: 56px;
-      bottom: -28px;
+      height: 40px;
       width: 2px;
       background: linear-gradient(to bottom, var(--gold-dim), transparent);
     }
@@ -480,6 +480,31 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ── Mobile fixes ────────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      section { padding: 56px 0; }
+
+      #hero { padding: 100px 0 60px; }
+
+      /* Stack hero buttons full-width so they don't wrap awkwardly */
+      .hero-actions {
+        flex-direction: column;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      /* Reduce headline size on very small screens */
+      .hero-headline { font-size: clamp(1.6rem, 7vw, 2.2rem); }
+
+      /* Flow: connector line can bleed over on mobile — clip it */
+      .flow-steps { overflow: hidden; }
+
+      /* Support section heading size */
+      .support-inner h2 { font-size: 1.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -590,7 +615,8 @@
         <div class="flow-step fade">
           <div class="flow-icon-wrap">&#128101;</div>
           <div class="flow-body">
-            <div class="flow-step-title">Share with your coach, family or friends</div>
+            <div class="flow-step-title">Export to Lichess, Chess.com or share the PGN</div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px;">Done inside the app — one tap.</p>
           </div>
         </div>
 
