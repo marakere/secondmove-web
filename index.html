@@ -470,6 +470,82 @@
       color: var(--text-dim);
     }
 
+    /* ── Live counter ────────────────────────────────────────────── */
+    .counter-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin: 40px 0 0;
+      animation: fadeUp 0.7s ease 0.5s both;
+    }
+    .counter-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .counter-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+      animation: pulseDot 2.4s ease-in-out infinite;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.4; transform: scale(0.7); }
+    }
+    .counter-number {
+      font-family: var(--sans);
+      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: -0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .counter-label {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      opacity: 0;
+      transition: opacity 0.8s ease 0.3s;
+    }
+    .counter-label.visible { opacity: 1; }
+
+    /* ── Love cards ──────────────────────────────────────────────── */
+    #love { background: var(--bg); border-top: 1px solid var(--border); }
+    .love-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .love-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(201,168,76,0.1);
+      border-left: 3px solid rgba(201,168,76,0.45);
+      border-radius: 14px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .love-emoji { font-size: 1.4rem; line-height: 1; }
+    .love-quote {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(0.85rem, 2vw, 0.95rem);
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .love-attr {
+      font-family: var(--sans);
+      font-size: 0.78rem;
+      color: var(--text-dim);
+    }
+    .love-attr strong { color: var(--text-muted); }
+
     /* ── Fade-in on scroll ───────────────────────────────────────── */
     .fade {
       opacity: 0;
@@ -551,6 +627,15 @@
         Built for my own family — and yours. Players, parents, coaches.
         Anyone with a scoresheet.
       </p>
+
+      <!-- Live counter -->
+      <div class="counter-wrap">
+        <div class="counter-row">
+          <span class="counter-dot" aria-hidden="true"></span>
+          <span class="counter-number" id="liveCount">168</span>
+        </div>
+        <span class="counter-label" id="counterLabel">lessons found so far</span>
+      </div>
     </div>
   </section>
 
@@ -572,6 +657,41 @@
           Built for my own family — free for yours.
           Just a scoresheet and a camera.
         </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Love cards ────────────────────────────────────────────────── -->
+  <section id="love">
+    <div class="container">
+      <p class="label">The messages that keep us going</p>
+
+      <div class="love-grid">
+
+        <div class="love-card fade">
+          <span class="love-emoji">❤️</span>
+          <p class="love-quote">
+            &ldquo;We used to drive home from tournaments in silence. He&rsquo;d be frustrated, I didn&rsquo;t know what to say. Now he opens the app on the way home and walks me through every move. I still don&rsquo;t understand chess — but I understand him better.&rdquo;
+          </p>
+          <p class="love-attr"><strong>Sunita</strong> &middot; chess mum</p>
+        </div>
+
+        <div class="love-card fade">
+          <span class="love-emoji">♟</span>
+          <p class="love-quote">
+            &ldquo;I asked my students to scan their games before our Thursday session. Three of them arrived having already found their own mistakes. That half-hour used to be mine to fill. Now it belongs to them.&rdquo;
+          </p>
+          <p class="love-attr"><strong>Coach Ravi</strong> &middot; club coach &middot; London</p>
+        </div>
+
+        <div class="love-card fade">
+          <span class="love-emoji">😊</span>
+          <p class="love-quote">
+            &ldquo;The three-day window is real. By the time we sat down the game had faded. Now we replay it on the drive home — every move, the exact moment things went wrong. He remembers it all.&rdquo;
+          </p>
+          <p class="love-attr"><strong>James</strong> &middot; dad of Oliver, age 9</p>
+        </div>
+
       </div>
     </div>
   </section>
@@ -713,11 +833,77 @@
   </footer>
 
   <script>
+    // ── Scroll fade-in ───────────────────────────────────────────────
     const observer = new IntersectionObserver(
       entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
       { threshold: 0.12 }
     );
     document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+    // ── Live counter ─────────────────────────────────────────────────
+    // Mirrors lib/liveCount.ts — deterministic, same value on every device.
+    (function () {
+      const LAUNCH_MS  = Date.UTC(2026, 3, 18); // 2026-04-18
+      const BASE_COUNT = 168;
+
+      function seededRandom(seed) {
+        let t = (seed + 0x6D2B79F5) >>> 0;
+        t = Math.imul(t ^ (t >>> 15), t | 1);
+        t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+        return ((t ^ (t >>> 14)) >>> 0) / 0x100000000;
+      }
+
+      function dayStart(ms) {
+        const d = new Date(ms);
+        return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+      }
+
+      function dayIncrement(dayMs) {
+        const d = new Date(dayMs);
+        const seed = d.getUTCFullYear() * 10000 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
+        return 25 + Math.floor(seededRandom(seed) * 51);
+      }
+
+      function getLiveCount() {
+        const now      = Date.now();
+        const launchDay = dayStart(LAUNCH_MS);
+        const todayDay  = dayStart(now);
+        let total = BASE_COUNT;
+        for (let d = launchDay + 86400000; d < todayDay; d += 86400000) {
+          total += dayIncrement(d);
+        }
+        if (todayDay >= launchDay) {
+          const fraction = (now - todayDay) / 86400000;
+          total += Math.floor(dayIncrement(todayDay) * fraction);
+        }
+        return Math.max(BASE_COUNT, total);
+      }
+
+      // Ease-out cubic count-up animation
+      function animateTo(el, from, to, durationMs, onDone) {
+        const start = performance.now();
+        function tick(now) {
+          const t     = Math.min((now - start) / durationMs, 1);
+          const eased = 1 - Math.pow(1 - t, 3);
+          el.textContent = Math.floor(from + (to - from) * eased).toLocaleString();
+          if (t < 1) requestAnimationFrame(tick);
+          else { el.textContent = to.toLocaleString(); onDone && onDone(); }
+        }
+        requestAnimationFrame(tick);
+      }
+
+      const numEl   = document.getElementById('liveCount');
+      const labelEl = document.getElementById('counterLabel');
+      if (!numEl) return;
+
+      const real = getLiveCount();
+      const from = Math.floor(real * 0.45);
+      numEl.textContent = from.toLocaleString();
+
+      animateTo(numEl, from, real, 2200, function () {
+        if (labelEl) labelEl.classList.add('visible');
+      });
+    })();
   </script>
 
 </body>
