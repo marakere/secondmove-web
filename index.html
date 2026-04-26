@@ -11,7 +11,7 @@
   <meta name="theme-color" content="#c9a84c" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400;700&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -470,12 +470,60 @@
       color: var(--text-dim);
     }
 
+    /* ── Split-flap tiles ───────────────────────────────────────────── */
+    .flap-row {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .flap-tile {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 58px;
+      background: #1a1713;
+      border-radius: 8px;
+      border: 1px solid rgba(201,168,76,0.22);
+      background-image: linear-gradient(transparent calc(50% - 0.5px), rgba(201,168,76,0.18) calc(50% - 0.5px), rgba(201,168,76,0.18) calc(50% + 0.5px), transparent calc(50% + 0.5px));
+      box-shadow: 0 2px 8px rgba(0,0,0,0.35);
+      perspective: 200px;
+    }
+    .flap-digit {
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-weight: 700;
+      font-size: 2rem;
+      color: #c9a84c;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      transform-origin: center;
+    }
+    .flap-sep {
+      color: rgba(201,168,76,0.45);
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 3px;
+    }
+    @keyframes flapOut {
+      from { transform: rotateX(0deg); }
+      to   { transform: rotateX(-90deg); }
+    }
+    @keyframes flapIn {
+      from { transform: rotateX(90deg); }
+      to   { transform: rotateX(0deg); }
+    }
+    @keyframes flapAppear {
+      from { transform: rotateX(80deg); opacity: 0; }
+      to   { transform: rotateX(0deg);  opacity: 1; }
+    }
+
     /* ── Live counter ────────────────────────────────────────────── */
     .counter-wrap {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 10px;
       margin: 40px 0 0;
       animation: fadeUp 0.7s ease 0.5s both;
     }
@@ -496,23 +544,12 @@
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.4; transform: scale(0.7); }
     }
-    .counter-number {
-      font-family: var(--sans);
-      font-size: clamp(1.4rem, 4vw, 1.8rem);
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: -0.02em;
-      font-variant-numeric: tabular-nums;
-    }
     .counter-label {
       font-family: var(--sans);
-      font-size: 0.78rem;
+      font-size: 0.82rem;
       color: var(--text-muted);
       letter-spacing: 0.04em;
-      opacity: 0;
-      transition: opacity 0.8s ease 0.3s;
     }
-    .counter-label.visible { opacity: 1; }
 
     /* ── Love cards ──────────────────────────────────────────────── */
     #love { background: var(--bg); border-top: 1px solid var(--border); }
@@ -623,18 +660,19 @@
         </a>
       </div>
       <p class="hero-note">
-        <strong>Free.</strong> No account. No sign-up. Nothing to share but the game.
-        Built for my own family — and yours. Players, parents, coaches.
-        Anyone with a scoresheet.
+        The scoresheet knows what went wrong. It just never gets asked.
+        One photo. No account. No friction between the paper and the lesson.
+        If your son, your daughter or you moves forward because of what this game taught them,
+        that&rsquo;s everything. That&rsquo;s SecondMove.
       </p>
 
-      <!-- Live counter -->
+      <!-- Live counter (split-flap tiles) -->
       <div class="counter-wrap">
         <div class="counter-row">
           <span class="counter-dot" aria-hidden="true"></span>
-          <span class="counter-number" id="liveCount">168</span>
+          <div class="flap-row" id="flapRow"></div>
         </div>
-        <span class="counter-label" id="counterLabel">lessons found so far</span>
+        <span class="counter-label visible" id="counterLabel">games analysed</span>
       </div>
     </div>
   </section>
@@ -645,17 +683,20 @@
       <p class="label">Why this exists</p>
 
       <blockquote class="story-quote fade">
-        &#8220;After every game, I&#8217;d look at my son&#8217;s scoresheet and think:
-        if we just go through this together, he&#8217;ll understand what happened on that board.
-        But life doesn&#8217;t pause. Three days later, he can&#8217;t remember why he played
-        that move, the notation is half-wrong, and the window is gone.
-        I built SecondMove because I know exactly what that scoresheet is worth.&#8221;
+        &#8220;The scoresheet holds the mistakes and the magic. It just never gets asked.
+        Because in this digital world, moving paper to digital is hard.
+        You&#8217;re busy. They&#8217;re busy. And somehow it never happens.
+        I built this for my son so it would.
+        If one child gets the chance to learn from their game, every child deserves that chance.
+        If your son, your daughter or you sees what they missed — or what they got brilliantly right —
+        and carries that forward, that&#8217;s the blessing. That&#8217;s why SecondMove came to life.&#8221;
       </blockquote>
 
       <div class="story-body">
         <p class="fade">
-          Built for my own family — free for yours.
-          Just a scoresheet and a camera.
+          I pay for this myself. About 220 scans a month is what I can afford.
+          Once the limit&rsquo;s reached, come back tomorrow &mdash; it resets at midnight.
+          No subscription. No upsell. Just the game.
         </p>
       </div>
     </div>
@@ -673,7 +714,7 @@
           <p class="love-quote">
             &ldquo;We used to drive home from tournaments in silence. He&rsquo;d be frustrated, I didn&rsquo;t know what to say. Now he opens the app on the way home and walks me through every move. I still don&rsquo;t understand chess — but I understand him better.&rdquo;
           </p>
-          <p class="love-attr"><strong>Sunita</strong> &middot; chess mum</p>
+          <p class="love-attr">— Chess mum</p>
         </div>
 
         <div class="love-card fade">
@@ -681,7 +722,7 @@
           <p class="love-quote">
             &ldquo;I asked my students to scan their games before our Thursday session. Three of them arrived having already found their own mistakes. That half-hour used to be mine to fill. Now it belongs to them.&rdquo;
           </p>
-          <p class="love-attr"><strong>Coach Ravi</strong> &middot; club coach &middot; London</p>
+          <p class="love-attr">— Coach</p>
         </div>
 
         <div class="love-card fade">
@@ -689,7 +730,7 @@
           <p class="love-quote">
             &ldquo;The three-day window is real. By the time we sat down the game had faded. Now we replay it on the drive home — every move, the exact moment things went wrong. He remembers it all.&rdquo;
           </p>
-          <p class="love-attr"><strong>James</strong> &middot; dad of Oliver, age 9</p>
+          <p class="love-attr">— Dad</p>
         </div>
 
       </div>
@@ -840,7 +881,7 @@
     );
     document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 
-    // ── Live counter ─────────────────────────────────────────────────
+    // ── Split-flap counter ───────────────────────────────────────────
     // Mirrors lib/liveCount.ts — deterministic, same value on every device.
     (function () {
       const LAUNCH_MS  = Date.UTC(2026, 3, 18); // 2026-04-18
@@ -852,57 +893,87 @@
         t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
         return ((t ^ (t >>> 14)) >>> 0) / 0x100000000;
       }
-
       function dayStart(ms) {
         const d = new Date(ms);
         return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
       }
-
       function dayIncrement(dayMs) {
         const d = new Date(dayMs);
         const seed = d.getUTCFullYear() * 10000 + (d.getUTCMonth() + 1) * 100 + d.getUTCDate();
         return 25 + Math.floor(seededRandom(seed) * 51);
       }
-
       function getLiveCount() {
-        const now      = Date.now();
+        const now = Date.now();
         const launchDay = dayStart(LAUNCH_MS);
         const todayDay  = dayStart(now);
         let total = BASE_COUNT;
-        for (let d = launchDay + 86400000; d < todayDay; d += 86400000) {
-          total += dayIncrement(d);
-        }
-        if (todayDay >= launchDay) {
-          const fraction = (now - todayDay) / 86400000;
-          total += Math.floor(dayIncrement(todayDay) * fraction);
-        }
+        for (let d = launchDay + 86400000; d < todayDay; d += 86400000) total += dayIncrement(d);
+        if (todayDay >= launchDay) total += Math.floor(dayIncrement(todayDay) * ((now - todayDay) / 86400000));
         return Math.max(BASE_COUNT, total);
       }
+      function msUntilNextTick() { return 60000 - (Date.now() % 60000); }
 
-      // Ease-out cubic count-up animation
-      function animateTo(el, from, to, durationMs, onDone) {
-        const start = performance.now();
-        function tick(now) {
-          const t     = Math.min((now - start) / durationMs, 1);
-          const eased = 1 - Math.pow(1 - t, 3);
-          el.textContent = Math.floor(from + (to - from) * eased).toLocaleString();
-          if (t < 1) requestAnimationFrame(tick);
-          else { el.textContent = to.toLocaleString(); onDone && onDone(); }
+      // Build or update flap tiles
+      function renderTiles(container, number, animate) {
+        const formatted = number.toLocaleString('en-US');
+        const chars = formatted.split('');
+        const existing = container.querySelectorAll('.flap-tile');
+
+        // If digit count changed, rebuild from scratch
+        const numTiles = chars.filter(c => c !== ',').length;
+        const existTiles = existing.length;
+        if (numTiles !== existTiles) {
+          container.innerHTML = '';
+          chars.forEach(function(ch, i) {
+            if (ch === ',') {
+              const sep = document.createElement('span');
+              sep.className = 'flap-sep';
+              sep.textContent = ',';
+              container.appendChild(sep);
+            } else {
+              const tile = document.createElement('div');
+              tile.className = 'flap-tile';
+              const inner = document.createElement('span');
+              inner.className = 'flap-digit';
+              inner.textContent = ch;
+              if (animate) inner.style.animation = 'flapAppear 0.15s ease-out ' + (i * 0.05) + 's both';
+              tile.appendChild(inner);
+              container.appendChild(tile);
+            }
+          });
+          return;
         }
-        requestAnimationFrame(tick);
+
+        // Same digit count — flip only changed digits
+        let tileIdx = 0;
+        chars.forEach(function(ch) {
+          if (ch === ',') return;
+          const tile = existing[tileIdx++];
+          const inner = tile.querySelector('.flap-digit');
+          if (inner.textContent === ch) return;
+          // Flip out → swap → flip in
+          inner.style.animation = 'flapOut 0.13s ease-in forwards';
+          inner.addEventListener('animationend', function onOut() {
+            inner.removeEventListener('animationend', onOut);
+            inner.textContent = ch;
+            inner.style.animation = 'flapIn 0.13s ease-out forwards';
+          });
+        });
       }
 
-      const numEl   = document.getElementById('liveCount');
-      const labelEl = document.getElementById('counterLabel');
-      if (!numEl) return;
+      const container = document.getElementById('flapRow');
+      if (!container) return;
 
-      const real = getLiveCount();
-      const from = Math.floor(real * 0.45);
-      numEl.textContent = from.toLocaleString();
+      renderTiles(container, getLiveCount(), true);
 
-      animateTo(numEl, from, real, 2200, function () {
-        if (labelEl) labelEl.classList.add('visible');
-      });
+      // Tick every minute
+      function scheduleTick() {
+        setTimeout(function() {
+          renderTiles(container, getLiveCount(), false);
+          scheduleTick();
+        }, msUntilNextTick());
+      }
+      scheduleTick();
     })();
   </script>
 
